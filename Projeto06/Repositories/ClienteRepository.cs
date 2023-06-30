@@ -3,6 +3,7 @@ using Projeto06.Entities;
 using Projeto06.Settings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,68 @@ namespace Projeto06.Repositories
                 connection.Execute(query, cliente);
             }
 
+        }
+
+        public void Atualizar(Cliente cliente)
+        {
+            var query = @"
+              UPDATE CLIENTE
+              SET
+                  NOME = @Nome
+                  CPF = @Cpf
+                  DATANASCIMENTO = @DataNascimento
+              WHERE
+                ID = Id
+            ";
+            using (var connection = new SqlConnection(SqlServerSettings.GetConnectionString()))
+            {
+                connection.Execute(query, cliente);
+            }
+
+        }
+
+        public void Excluir(Cliente cliente)
+        {
+            var query = @"
+                DELETE FROM CLIENTE
+                WHERE ID = Id
+
+            ";
+
+            using (var connection = new SqlConnection(SqlServerSettings.GetConnectionString()))
+            {
+                connection.Execute(query, cliente);
+            }
+        }
+
+        public List<Cliente> ObterTodos()
+        {
+            var query = @"
+                SELECT *FROM CLIENTE
+                ORDER BY NOME
+
+            ";
+
+            using (var connection = new SqlConnection(SqlServerSettings.GetConnectionString()))
+            {
+                return connection.Query<Cliente>(query).ToList();
+            }
+
+
+        }
+
+        public Cliente? ObterPorId(Guid id)
+        {
+            var query = @"
+                SELECT *FROM CLIENTE
+                WHERE ID = @Id
+
+            ";
+
+            using (var connection = new SqlConnection(SqlServerSettings.GetConnectionString()))
+            {
+                return connection.Query<Cliente>(query, new { @Id = id }).FirstOrDefault();
+            }
         }
 
     }
