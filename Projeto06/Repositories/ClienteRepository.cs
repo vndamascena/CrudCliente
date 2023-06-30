@@ -76,7 +76,7 @@ namespace Projeto06.Repositories
 
         }
 
-        public Cliente? ObterPorId(Guid id)
+        public static Cliente? ObterPorId(Guid id)
         {
             var query = @"
                 SELECT *FROM CLIENTE
